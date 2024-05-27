@@ -8,21 +8,24 @@
 		<version>3.3.1-SNAPSHOT</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>com.jchefdeville</groupId>
 	<artifactId>formula1-world-championship</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+
 	<name>formula1-world-championship</name>
 	<description>Demo project for Spring Boot formula1-world-championship</description>
+
 	<properties>
 		<java.version>21</java.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -53,6 +56,14 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<excludes>
+					<exclude>**/*</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
 	</build>
 	<repositories>
 		<repository>
