@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Circuits from './components/Circuits';
 
 function App() {
-  return (
-    <div>
-      <h1>Hello, React!</h1>
-    </div>
-  );
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/circuits')
+            .then(response => {
+                console.log(response.data);
+                setData(response.data);
+            })
+            .catch(error => {
+                console.error('Erreur while retrieving circuits API:', error);
+            });
+    }, []);
+
+    return (
+        <div>
+            <h1>DataTable Circuits</h1>
+            <Circuits data={data} />
+        </div>
+    );
 }
 
 export default App;
