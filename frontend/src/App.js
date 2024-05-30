@@ -18,7 +18,7 @@ function App() {
 
     return (
         <div>
-            <h1>DataTable Circuits</h1>
+            <h1>Circuits</h1>
             <Circuits data={data} />
         </div>
     );
