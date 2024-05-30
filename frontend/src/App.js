@@ -1,27 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
 import Circuits from './components/Circuits';
+import Constructors from './components/Constructors';
 
 function App() {
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        axios.get('http://localhost:8080/circuits')
-            .then(response => {
-                console.log(response.data);
-                setData(response.data);
-            })
-            .catch(error => {
-                console.error('Erreur while retrieving circuits API:', error);
-            });
-    }, []);
-
-    return (
-        <div>
-            <h1>Circuits</h1>
-            <Circuits data={data} />
-        </div>
-    );
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/circuits" element={<Circuits />} />
+        <Route path="/constructors" element={<Constructors />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;

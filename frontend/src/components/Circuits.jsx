@@ -2,6 +2,7 @@ import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import BurgerMenu from './BurgerMenu';
 
 const theme = createTheme({
   components: {
@@ -39,6 +40,7 @@ function Circuits({ data }) {
 
   return (
     <ThemeProvider theme={theme}>
+      <BurgerMenu />
       <Box sx={{ width: '100%' }}>
         <DataGrid
           rows={data}
