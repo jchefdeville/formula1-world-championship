@@ -1,5 +1,10 @@
 package com.jchefdeville.formula1_world_championship.model;
 
-public class Constructor {
-
+public record Constructor(
+		int constructorId,
+		String constructorRef,
+		String name,
+		String nationality,
+		String url) {
 }
+
