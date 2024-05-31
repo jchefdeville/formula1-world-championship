@@ -14,3 +14,10 @@ Navigate to
 ```bash
 http://localhost:8080/swagger-ui/index.html
 ```
+
+On the frontend
+```bash
+cd frontend
+npm install
+npm run start
+```
