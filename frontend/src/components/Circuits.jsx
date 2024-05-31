@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { fetchCircuits } from '../api';
 import BurgerMenu from './BurgerMenu';
 
 const theme = createTheme({
@@ -24,7 +25,19 @@ const theme = createTheme({
   },
 });
 
-function Circuits({ data }) {
+function Circuits() {
+
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+        const circuitsData = await fetchCircuits();
+        setData(circuitsData);
+    }
+
+    fetchData();
+  }, []);
+
   const columns = [
     { field: 'name', headerName: 'Name', flex: 1 },
     { field: 'location', headerName: 'Location', flex: 1 },
@@ -38,12 +51,14 @@ function Circuits({ data }) {
     },
   ];
 
+ 
+
   return (
     <ThemeProvider theme={theme}>
       <BurgerMenu />
       <Box sx={{ width: '100%' }}>
         <DataGrid
-          rows={data}
+          rows={data || []}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
