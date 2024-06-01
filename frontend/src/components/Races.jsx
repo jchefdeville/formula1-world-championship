@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { IconButton, Box } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { fetchRaces } from '../api';
 import BurgerMenu from './BurgerMenu';
 import { theme } from '../styles/theme-grid';
 
 function Races() {
-
+ 
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -20,6 +21,17 @@ function Races() {
   }, []);
 
   const columns = [
+    {
+      field: 'raceId', headerName: '', flex: 0.1, renderCell: (params) => (
+        params && params.length > 0 ? (
+          <IconButton onClick={() => handleDetailClick(params.row.raceId)}>
+            <VisibilityIcon />
+          </IconButton>
+        ) : (
+          <div>Loading...</div>
+        )
+      ),
+    },
     { field: 'round', headerName: 'Round', flex: 1 },
     { field: 'name', headerName: 'Name', flex: 1 },
     { field: 'date', headerName: 'Date', flex: 1 },
@@ -30,7 +42,9 @@ function Races() {
     },
   ];
 
- 
+  const handleDetailClick = (raceId) => {
+    console.log(raceId);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -41,7 +55,7 @@ function Races() {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          getRowId={(row) => row.circuitId}
+          getRowId={(row) => row.raceId}
           disableSelectionOnClick
           autoHeight
         />

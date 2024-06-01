@@ -33,24 +33,22 @@ function Drivers() {
     },
   ];
 
- 
-
-return (
-    <ThemeProvider theme={theme}>
-        <BurgerMenu />
-        <Box sx={{ width: '100%' }}>
-            <DataGrid
-                rows={data || []}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                getRowId={(row) => row.driverId}
-                disableSelectionOnClick
-                autoHeight
-            />
-        </Box>
-    </ThemeProvider>
-);
+  return (
+      <ThemeProvider theme={theme}>
+          <BurgerMenu />
+          <Box sx={{ width: '100%' }}>
+              <DataGrid
+                  rows={data || []}
+                  columns={columns}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  getRowId={(row) => row.driverId}
+                  disableSelectionOnClick
+                  autoHeight
+              />
+          </Box>
+      </ThemeProvider>
+  );
 }
 
 export default Drivers;
