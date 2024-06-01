@@ -4,26 +4,7 @@ import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { fetchDrivers } from '../api';
 import BurgerMenu from './BurgerMenu';
-
-const theme = createTheme({
-  components: {
-    MuiDataGrid: {
-      styleOverrides: {
-        root: {
-          '& .MuiDataGrid-row:nth-of-type(odd)': {
-            backgroundColor: '#f5f5f5',
-          },
-          '& .MuiDataGrid-row:nth-of-type(even)': {
-            backgroundColor: '#ffffff',
-          },
-          '& .MuiDataGrid-cell': {
-            borderBottom: '1px solid #e0e0e0',
-          },
-        },
-      },
-    },
-  },
-});
+import { theme } from '../styles/theme-grid';
 
 function Drivers() {
 

@@ -29,3 +29,13 @@ export const fetchCircuits = async () => {
         throw error;
     }
 };
+
+export const fetchRaces = async () => {
+    try {
+        const response = await axios.get('http://localhost:8080/races/2023');
+        return response.data;
+    } catch (error) {
+        console.error('Erreur while retrieving races API:', error);
+        throw error;
+    }
+};

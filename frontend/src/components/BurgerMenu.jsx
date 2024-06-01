@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './BurgerMenu.css';
+import '../styles/burger-menu.css';
 
-function BurgerMenu({ onCircuitsClick, onConstructorsClick }) {
+function BurgerMenu() {
 
     return (
         <div className="burger-menu">
@@ -14,6 +14,7 @@ function BurgerMenu({ onCircuitsClick, onConstructorsClick }) {
                     <li><Link to="/drivers">Drivers</Link></li>
                     <li><Link to="/constructors">Constructors</Link></li>
                     <li><Link to="/circuits">Circuits</Link></li>
+                    <li><Link to="/races">Races</Link></li>
                 </ul>
             </nav>
         </div>
