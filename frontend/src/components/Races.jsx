@@ -1,8 +1,10 @@
+
+
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { IconButton, Box } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Visibility } from '@mui/icons-material';
 import { fetchRaces } from '../api';
 import BurgerMenu from './BurgerMenu';
 import { theme } from '../styles/theme-grid';
@@ -23,13 +25,9 @@ function Races() {
   const columns = [
     {
       field: 'raceId', headerName: '', flex: 0.1, renderCell: (params) => (
-        params && params.length > 0 ? (
-          <IconButton onClick={() => handleDetailClick(params.row.raceId)}>
-            <VisibilityIcon />
+        <IconButton onClick={() => handleDetailClick(params.row.raceId)}>
+            <Visibility />
           </IconButton>
-        ) : (
-          <div>Loading...</div>
-        )
       ),
     },
     { field: 'round', headerName: 'Round', flex: 1 },
@@ -47,9 +45,8 @@ function Races() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <BurgerMenu />
       <Box sx={{ width: '100%' }}>
+        <BurgerMenu />
         <DataGrid
           rows={data || []}
           columns={columns}
@@ -60,7 +57,6 @@ function Races() {
           autoHeight
         />
       </Box>
-    </ThemeProvider>
   );
 }
 
