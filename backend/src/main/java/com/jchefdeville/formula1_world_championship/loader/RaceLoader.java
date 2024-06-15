@@ -16,7 +16,7 @@ import com.opencsv.exceptions.CsvException;
 
 public class RaceLoader {
 
-	private static final Logger logger = LoggerFactory.getLogger(ConstructorLoader.class);
+	private static final Logger logger = LoggerFactory.getLogger(RaceLoader.class);
 
 	public static List<Race> fromCsv(String filePath) {
 		try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
