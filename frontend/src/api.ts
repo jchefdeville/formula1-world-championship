@@ -39,3 +39,14 @@ export const fetchRaces = async () => {
         throw error;
     }
 };
+
+
+export const fetchRaceDetails = async (raceId: number) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/races/${raceId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Erreur while retrieving race details {raceId} API:', error);
+        throw error;
+    }
+};

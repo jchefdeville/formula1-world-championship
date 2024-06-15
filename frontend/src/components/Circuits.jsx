@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { fetchCircuits } from '../api';
+import { fetchCircuits } from '../api.ts';
 import { theme } from '../styles/theme-grid';
 import BurgerMenu from './BurgerMenu';
 

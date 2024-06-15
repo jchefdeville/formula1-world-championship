@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { IconButton, Box } from '@mui/material';
 import { Visibility } from '@mui/icons-material';
-import { fetchRaces } from '../api';
+import { fetchRaces } from '../api.ts';
 import BurgerMenu from './BurgerMenu';
 import { useNavigate } from 'react-router-dom';
 

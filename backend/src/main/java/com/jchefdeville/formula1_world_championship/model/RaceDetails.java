@@ -1,12 +1,9 @@
 package com.jchefdeville.formula1_world_championship.model;
 
-public class RaceDetails {
+import java.util.List;
 
-	// Results
-	// Pilotes
-
-
-	// Constructor_Resullts
-	// Constructor
-
-}
+public record RaceDetails(
+		Race race,
+		List<Result> results,
+		List<Driver> drivers)
+{}

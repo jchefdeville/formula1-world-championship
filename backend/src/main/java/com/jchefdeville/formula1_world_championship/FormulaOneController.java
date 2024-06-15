@@ -1,6 +1,7 @@
 package com.jchefdeville.formula1_world_championship;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +49,7 @@ public class FormulaOneController {
 		return drivers;
 	}
 
-	@GetMapping("/races/{raceId}/")
+	@GetMapping("/races/{raceId}")
 	public RaceDetails getRaceDetails(@PathVariable int raceId) {
 		Race race = races.stream()
 				.filter(r -> r.raceId() == raceId).findFirst().get();
@@ -57,12 +58,22 @@ public class FormulaOneController {
 				.filter(r -> r.raceId() == raceId)
 				.toList();
 
-		raceResults.forEach(r -> logger.info("driverId={}", r.driverId()));
+		List<Integer> driverIds = raceResults.stream()
+				.map(Result::driverId)
+				.collect(Collectors.toList());
+
+		List<Driver> raceDrivers = drivers.stream()
+				.filter(driver -> driverIds.contains(driver.driverId()))
+				.collect(Collectors.toList());
 
 		logger.info("Race={}", race.raceId());
 		logger.info("raceResults={}", raceResults.size());
+		logger.info("raceDrivers={}", raceDrivers.size());
 
-		return null;
+		// Constructor_Resullts
+		// Constructor
+
+		return new RaceDetails(race, raceResults, raceDrivers);
 	}
 
 	@GetMapping("/seasons/{year}/races")

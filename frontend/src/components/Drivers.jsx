@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { fetchDrivers } from '../api';
+import { ThemeProvider } from '@mui/material/styles';
+import { fetchDrivers } from '../api.ts';
 import BurgerMenu from './BurgerMenu';
 import { theme } from '../styles/theme-grid';
 
