@@ -32,7 +32,7 @@ export const fetchCircuits = async () => {
 
 export const fetchRaces = async () => {
     try {
-        const response = await axios.get('http://localhost:8080/races/2023');
+        const response = await axios.get('http://localhost:8080/seasons/2023/races');
         return response.data;
     } catch (error) {
         console.error('Erreur while retrieving races API:', error);

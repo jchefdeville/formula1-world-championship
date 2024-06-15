@@ -40,7 +40,7 @@ public class FormulaOneController {
 		return drivers;
 	}
 
-	@GetMapping("/races/{year}")
+	@GetMapping("/seasons/{year}/races")
 	public List<Race> getRaces(@PathVariable int year) {
 		return races.stream()
 				.filter(r -> r.year() == year)

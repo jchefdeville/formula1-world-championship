@@ -5,6 +5,7 @@ import Drivers from './components/Drivers';
 import Constructors from './components/Constructors';
 import Circuits from './components/Circuits';
 import Races from './components/Races';
+import RaceDetail from './components/RaceDetail';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/constructors" element={<Constructors />} />
         <Route path="/circuits" element={<Circuits />} />
         <Route path="/races/" element={<Races />} />
+        <Route path="/races/:raceId" element={<RaceDetail />} />
       </Routes>
     </Router>
   );

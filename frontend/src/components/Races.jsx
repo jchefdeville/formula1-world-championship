@@ -3,14 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { IconButton, Box } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
 import { Visibility } from '@mui/icons-material';
 import { fetchRaces } from '../api';
 import BurgerMenu from './BurgerMenu';
-import { theme } from '../styles/theme-grid';
+import { useNavigate } from 'react-router-dom';
 
 function Races() {
  
+  const navigate = useNavigate(); // Initialize useNavigate
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -26,8 +26,8 @@ function Races() {
     {
       field: 'raceId', headerName: '', flex: 0.1, renderCell: (params) => (
         <IconButton onClick={() => handleDetailClick(params.row.raceId)}>
-            <Visibility />
-          </IconButton>
+          <Visibility />
+        </IconButton>
       ),
     },
     { field: 'round', headerName: 'Round', flex: 1 },
@@ -42,6 +42,7 @@ function Races() {
 
   const handleDetailClick = (raceId) => {
     console.log(raceId);
+    navigate(`/races/${raceId}`); // Use navigate with the raceId
   };
 
   return (
