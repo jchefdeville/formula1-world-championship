@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Races() {
  
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -41,8 +41,7 @@ function Races() {
   ];
 
   const handleDetailClick = (raceId) => {
-    console.log(raceId);
-    navigate(`/races/${raceId}`); // Use navigate with the raceId
+    navigate(`/races/${raceId}`);
   };
 
   return (

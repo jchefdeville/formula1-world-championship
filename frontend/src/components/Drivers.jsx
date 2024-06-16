@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
+import { IconButton, Box } from '@mui/material';
+import { Visibility } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/material/styles';
 import { fetchDrivers } from '../api.ts';
 import BurgerMenu from './BurgerMenu';
 import { theme } from '../styles/theme-grid';
+import { useNavigate } from 'react-router-dom';
 
 function Drivers() {
 
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -19,8 +22,18 @@ function Drivers() {
     fetchData();
   }, []);
 
+  const handleDetailClick = (driverId) => {
+    navigate(`/drivers/${driverId}`);
+  };
+
   const columns = [
-    { field: 'driverRef', headerName: 'Ref', flex: 1 },
+    { 
+      field: 'driverId', headerName: '', flex: 0.1, renderCell: (params) => (
+      <IconButton onClick={() => handleDetailClick(params.row.driverId)}>
+        <Visibility />
+      </IconButton>
+      ), 
+    },
     { field: 'number', headerName: 'Number', flex: 1 },
     { field: 'code', headerName: 'Code', flex: 1 },
     { field: 'forename', headerName: 'Forename', flex: 1 },

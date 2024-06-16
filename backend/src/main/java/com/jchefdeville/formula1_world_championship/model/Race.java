@@ -12,7 +12,6 @@ public record Race(
 		LocalDate date,
 		LocalTime time,
 		String url,
-		// Optional fields (assuming null if empty in CSV)
 		LocalDate fp1Date,
 		LocalTime fp1Time,
 		LocalDate fp2Date,

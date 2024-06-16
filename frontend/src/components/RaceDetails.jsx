@@ -27,14 +27,16 @@ function RaceDetails() {
             <BurgerMenu />
             <h1>RACE DETAILS</h1>
             <p>Race ID: {raceId}</p>
-            <p>{race && race.name}</p>
+            <p>{race ? `${race.name} ${race.year} - Round ${race.round}` : 'Race details not available'}</p>
             {results && Array.isArray(results) ? (
                 <ul>
                 {results.map((result, index) => {
                     const driver = drivers.find(driver => driver.driverId === result.driverId);
                     return (
                         <li key={index}>
-                            {result.positionText} - { driver.forename } {driver.surname} - {result.points} points
+                            {result.positionText} 
+                            - <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
+                            - {result.points} points
                             <p>time = {result.time && ` ${result.time}`}</p>
                         </li>
                     );

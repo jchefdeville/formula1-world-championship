@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Drivers from './components/Drivers';
+import DriverDetails from './components/DriverDetails.jsx';
 import Constructors from './components/Constructors';
 import Circuits from './components/Circuits';
 import Races from './components/Races';
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/drivers" element={<Drivers />} />
+        <Route path="/drivers/:driverId" element={<DriverDetails />} />
         <Route path="/constructors" element={<Constructors />} />
         <Route path="/circuits" element={<Circuits />} />
         <Route path="/races/" element={<Races />} />

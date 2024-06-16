@@ -17,6 +17,7 @@ import com.jchefdeville.formula1_world_championship.loader.ResultLoader;
 import com.jchefdeville.formula1_world_championship.model.Circuit;
 import com.jchefdeville.formula1_world_championship.model.Constructor;
 import com.jchefdeville.formula1_world_championship.model.Driver;
+import com.jchefdeville.formula1_world_championship.model.DriverDetails;
 import com.jchefdeville.formula1_world_championship.model.Race;
 import com.jchefdeville.formula1_world_championship.model.RaceDetails;
 import com.jchefdeville.formula1_world_championship.model.Result;
@@ -42,6 +43,15 @@ public class FormulaOneController {
 	@GetMapping("/constructors")
 	public List<Constructor> getConstructors() {
 		return constructors;
+	}
+
+	@GetMapping("/drivers/{driverId}")
+	public DriverDetails getDriverDetails(@PathVariable int driverId) {
+		Driver driver = drivers.stream()
+				.filter(d -> d.driverId() == driverId).findFirst().get();
+
+
+		return new DriverDetails(driver);
 	}
 
 	@GetMapping("/drivers")
