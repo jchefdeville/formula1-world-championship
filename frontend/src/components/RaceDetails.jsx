@@ -21,31 +21,32 @@ function RaceDetails() {
 
         fetchData();
     }, [raceId]);
+
+    if (!race || !results || !drivers) {
+        return <div>Loading</div>
+    }
  
     return (
         <div>
             <BurgerMenu />
             <h1>RACE DETAILS</h1>
             <p>Race ID: {raceId}</p>
-            <p>{race ? `${race.name} ${race.year} - Round ${race.round}` : 'Race details not available'}</p>
-            {results && Array.isArray(results) ? (
-                <ul>
-                {results.map((result, index) => {
-                    const driver = drivers.find(driver => driver.driverId === result.driverId);
-                    return (
-                        <li key={index}>
-                            {result.positionText} 
-                            - <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
-                            - {result.points} points
-                            <p>time = {result.time && ` ${result.time}`}</p>
-                        </li>
-                    );
-                })}
-            </ul>
-            ) : (
-                <p>No results found</p>
-            )}
-        </div>
+
+            <p>{race.name} {race.year} - Round {race.round}</p>
+            <ul>
+            {results.map((result, index) => {
+                const driver = drivers.find(driver => driver.driverId === result.driverId);
+                return (
+                    <li key={index}>
+                        {result.positionText} 
+                        - <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
+                        - {result.points} points
+                        <p>time = {result.time}</p>
+                    </li>
+                );
+            })}
+        </ul>
+    </div>
   );
 }
 

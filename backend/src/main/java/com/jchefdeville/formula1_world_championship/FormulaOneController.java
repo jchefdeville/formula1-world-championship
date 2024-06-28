@@ -21,6 +21,7 @@ import com.jchefdeville.formula1_world_championship.model.DriverDetails;
 import com.jchefdeville.formula1_world_championship.model.Race;
 import com.jchefdeville.formula1_world_championship.model.RaceDetails;
 import com.jchefdeville.formula1_world_championship.model.Result;
+import com.jchefdeville.formula1_world_championship.model.SeasonDetails;
 
 import jakarta.annotation.PostConstruct;
 
@@ -47,7 +48,7 @@ public class FormulaOneController {
 
 	@GetMapping("/drivers/{driverId}")
 	public DriverDetails getDriverDetails(@PathVariable int driverId) {
-		Driver driver = drivers.stream()
+		var driver = drivers.stream()
 				.filter(d -> d.driverId() == driverId).findFirst().get();
 
 
@@ -61,10 +62,10 @@ public class FormulaOneController {
 
 	@GetMapping("/races/{raceId}")
 	public RaceDetails getRaceDetails(@PathVariable int raceId) {
-		Race race = races.stream()
+		var race = races.stream()
 				.filter(r -> r.raceId() == raceId).findFirst().get();
 
-		List<Result> raceResults = results.stream()
+		var raceResults = results.stream()
 				.filter(r -> r.raceId() == raceId)
 				.toList();
 
@@ -91,6 +92,18 @@ public class FormulaOneController {
 		return races.stream()
 				.filter(r -> r.year() == year)
 				.toList();
+	}
+
+	@GetMapping("/seasons/{year}")
+	public SeasonDetails getSeasonDetails(@PathVariable int year) {
+
+		var seasonRaces = races.stream()
+				.filter(r -> r.year() == year)
+				.toList();
+
+		var seasonDetails = new SeasonDetails(year, seasonRaces);
+
+		return seasonDetails;
 	}
 
 	@PostConstruct
