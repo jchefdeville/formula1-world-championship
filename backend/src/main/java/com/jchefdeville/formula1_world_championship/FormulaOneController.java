@@ -3,25 +3,13 @@ package com.jchefdeville.formula1_world_championship;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.jchefdeville.formula1_world_championship.loader.*;
+import com.jchefdeville.formula1_world_championship.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.jchefdeville.formula1_world_championship.loader.CircuitLoader;
-import com.jchefdeville.formula1_world_championship.loader.ConstructorLoader;
-import com.jchefdeville.formula1_world_championship.loader.DriverLoader;
-import com.jchefdeville.formula1_world_championship.loader.RaceLoader;
-import com.jchefdeville.formula1_world_championship.loader.ResultLoader;
-import com.jchefdeville.formula1_world_championship.model.Circuit;
-import com.jchefdeville.formula1_world_championship.model.Constructor;
-import com.jchefdeville.formula1_world_championship.model.Driver;
-import com.jchefdeville.formula1_world_championship.model.DriverDetails;
-import com.jchefdeville.formula1_world_championship.model.Race;
-import com.jchefdeville.formula1_world_championship.model.RaceDetails;
-import com.jchefdeville.formula1_world_championship.model.Result;
-import com.jchefdeville.formula1_world_championship.model.SeasonDetails;
 
 import jakarta.annotation.PostConstruct;
 
@@ -35,6 +23,7 @@ public class FormulaOneController {
 	private List<Driver> drivers;
 	private List<Race> races;
 	private List<Result> results;
+	private List<Status> statuses;
 
 	@GetMapping("/circuits")
 	public List<Circuit> getCircuits() {
@@ -71,12 +60,12 @@ public class FormulaOneController {
 
 		List<Integer> driverIds = raceResults.stream()
 				.map(Result::driverId)
-				.collect(Collectors.toList());
+				.toList();
 
 		List<Driver> raceDrivers = drivers.stream()
 				.filter(driver -> driverIds.contains(driver.driverId()))
 				.collect(Collectors.toList());
-
+		
 		logger.info("Race={}", race.raceId());
 		logger.info("raceResults={}", raceResults.size());
 		logger.info("raceDrivers={}", raceDrivers.size());
@@ -84,7 +73,9 @@ public class FormulaOneController {
 		// Constructor_Resullts
 		// Constructor
 
-		return new RaceDetails(race, raceResults, raceDrivers);
+		// statuses to /GET and store in load npm
+
+		return new RaceDetails(race, raceResults, raceDrivers, statuses);
 	}
 
 	@GetMapping("/seasons/{year}/races")
@@ -101,9 +92,7 @@ public class FormulaOneController {
 				.filter(r -> r.year() == year)
 				.toList();
 
-		var seasonDetails = new SeasonDetails(year, seasonRaces);
-
-		return seasonDetails;
+        return new SeasonDetails(year, seasonRaces);
 	}
 
 	@PostConstruct
@@ -113,5 +102,6 @@ public class FormulaOneController {
 		drivers = DriverLoader.fromCsv("src/main/resources/drivers.csv");
 		races = RaceLoader.fromCsv("src/main/resources/races.csv");
 		results = ResultLoader.fromCsv("src/main/resources/results.csv");
+		statuses = StatusLoader.fromCsv("src/main/resources/status.csv");
 	}
 }
