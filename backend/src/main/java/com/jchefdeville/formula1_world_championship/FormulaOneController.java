@@ -65,7 +65,7 @@ public class FormulaOneController {
 		List<Driver> raceDrivers = drivers.stream()
 				.filter(driver -> driverIds.contains(driver.driverId()))
 				.collect(Collectors.toList());
-		
+
 		logger.info("Race={}", race.raceId());
 		logger.info("raceResults={}", raceResults.size());
 		logger.info("raceDrivers={}", raceDrivers.size());
