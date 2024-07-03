@@ -3,13 +3,27 @@ package com.jchefdeville.formula1_world_championship;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.jchefdeville.formula1_world_championship.loader.*;
-import com.jchefdeville.formula1_world_championship.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.jchefdeville.formula1_world_championship.loader.CircuitLoader;
+import com.jchefdeville.formula1_world_championship.loader.ConstructorLoader;
+import com.jchefdeville.formula1_world_championship.loader.DriverLoader;
+import com.jchefdeville.formula1_world_championship.loader.RaceLoader;
+import com.jchefdeville.formula1_world_championship.loader.ResultLoader;
+import com.jchefdeville.formula1_world_championship.loader.StatusLoader;
+import com.jchefdeville.formula1_world_championship.model.Circuit;
+import com.jchefdeville.formula1_world_championship.model.Constructor;
+import com.jchefdeville.formula1_world_championship.model.Driver;
+import com.jchefdeville.formula1_world_championship.model.DriverDetails;
+import com.jchefdeville.formula1_world_championship.model.Race;
+import com.jchefdeville.formula1_world_championship.model.RaceDetails;
+import com.jchefdeville.formula1_world_championship.model.Result;
+import com.jchefdeville.formula1_world_championship.model.SeasonDetails;
+import com.jchefdeville.formula1_world_championship.model.Status;
 
 import jakarta.annotation.PostConstruct;
 
@@ -58,7 +72,7 @@ public class FormulaOneController {
 				.filter(r -> r.raceId() == raceId)
 				.toList();
 
-		List<Integer> driverIds = raceResults.stream()
+		var driverIds = raceResults.stream()
 				.map(Result::driverId)
 				.toList();
 
@@ -66,16 +80,25 @@ public class FormulaOneController {
 				.filter(driver -> driverIds.contains(driver.driverId()))
 				.collect(Collectors.toList());
 
+		var constuctorIds = raceResults.stream()
+				.map(Result::constructorId)
+				.toList();
+
+		var raceConstructors = constructors.stream()
+				.filter(constructor -> constuctorIds.contains(constructor.constructorId()))
+				.toList();
+
 		logger.info("Race={}", race.raceId());
 		logger.info("raceResults={}", raceResults.size());
 		logger.info("raceDrivers={}", raceDrivers.size());
+		logger.info("raceConstructors={}", raceConstructors.size());
 
 		// Constructor_Resullts
 		// Constructor
 
 		// statuses to /GET and store in load npm
 
-		return new RaceDetails(race, raceResults, raceDrivers, statuses);
+		return new RaceDetails(race, raceResults, raceDrivers, raceConstructors, statuses);
 	}
 
 	@GetMapping("/seasons/{year}/races")
@@ -92,7 +115,7 @@ public class FormulaOneController {
 				.filter(r -> r.year() == year)
 				.toList();
 
-        return new SeasonDetails(year, seasonRaces);
+		return new SeasonDetails(year, seasonRaces);
 	}
 
 	@PostConstruct

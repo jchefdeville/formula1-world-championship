@@ -13,6 +13,7 @@ function RaceDetails() {
     const [race, setRace] = useState(null);
     const [results, setResults] = useState(null);
     const [drivers, setDrivers] = useState(null);
+    const [constructors, setConstructors] = useState(null);
     const [statuses, setStatuses] = useState(null);
 
     const changeRaceId = (newRaceId) => {
@@ -25,13 +26,14 @@ function RaceDetails() {
             setRace(data.race);
             setResults(data.results);
             setDrivers(data.drivers);
+            setConstructors(data.constructors);
             setStatuses(data.statuses);
         }
 
         fetchData();
     }, [raceId]);
 
-    if (!race || !results || !drivers || !statuses) {
+    if (!race || !results || !drivers || !statuses || !constructors) {
         return <div>Loading</div>
     }
  
@@ -52,10 +54,12 @@ function RaceDetails() {
             {results.map((result, index) => {
                 const driver = drivers.find(driver => driver.driverId === result.driverId);
                 const status = statuses.find(status => status.statusId === result.statusId);
+                const constructor = constructors.find(constructor => constructor.constructorId === result.constructorId);
                 return (
                     <li key={index}>
                         {result.positionText} 
                         - <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
+                        - {constructor.name}
                         - {result.points} points
                         {result.statusId !== 1 ? (
                             <span> - {status.status}</span>
