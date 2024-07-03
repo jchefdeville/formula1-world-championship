@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jchefdeville.formula1_world_championship.loader.CircuitLoader;
 import com.jchefdeville.formula1_world_championship.loader.ConstructorLoader;
+import com.jchefdeville.formula1_world_championship.loader.ConstructorResultLoader;
 import com.jchefdeville.formula1_world_championship.loader.DriverLoader;
 import com.jchefdeville.formula1_world_championship.loader.RaceLoader;
 import com.jchefdeville.formula1_world_championship.loader.ResultLoader;
 import com.jchefdeville.formula1_world_championship.loader.StatusLoader;
 import com.jchefdeville.formula1_world_championship.model.Circuit;
 import com.jchefdeville.formula1_world_championship.model.Constructor;
+import com.jchefdeville.formula1_world_championship.model.ConstructorResult;
 import com.jchefdeville.formula1_world_championship.model.Driver;
 import com.jchefdeville.formula1_world_championship.model.DriverDetails;
 import com.jchefdeville.formula1_world_championship.model.Race;
@@ -37,6 +39,7 @@ public class FormulaOneController {
 	private List<Driver> drivers;
 	private List<Race> races;
 	private List<Result> results;
+	private List<ConstructorResult> constructorsResults;
 	private List<Status> statuses;
 
 	@GetMapping("/circuits")
@@ -93,9 +96,6 @@ public class FormulaOneController {
 		logger.info("raceDrivers={}", raceDrivers.size());
 		logger.info("raceConstructors={}", raceConstructors.size());
 
-		// Constructor_Resullts
-		// Constructor
-
 		// statuses to /GET and store in load npm
 
 		return new RaceDetails(race, raceResults, raceDrivers, raceConstructors, statuses);
@@ -125,6 +125,7 @@ public class FormulaOneController {
 		drivers = DriverLoader.fromCsv("src/main/resources/drivers.csv");
 		races = RaceLoader.fromCsv("src/main/resources/races.csv");
 		results = ResultLoader.fromCsv("src/main/resources/results.csv");
+		constructorsResults = ConstructorResultLoader.fromCsv("src/main/resources/constructor_results.csv");
 		statuses = StatusLoader.fromCsv("src/main/resources/status.csv");
 	}
 }
