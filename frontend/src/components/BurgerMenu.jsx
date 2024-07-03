@@ -14,8 +14,7 @@ function BurgerMenu() {
                     <li><Link to="/drivers">Drivers</Link></li>
                     <li><Link to="/constructors">Constructors</Link></li>
                     <li><Link to="/circuits">Circuits</Link></li>
-                    <li><Link to="/seasons/2023">Seasons 2023</Link></li>
-                    <li><Link to="/races">2023 Races</Link></li>
+                    <li><Link to="/seasons/2023">2023 Season</Link></li>
                 </ul>
             </nav>
         </div>

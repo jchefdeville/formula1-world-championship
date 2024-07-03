@@ -39,7 +39,6 @@ function RaceDetails() {
         <div>
             <BurgerMenu />
 
-            <h2>{race.year}</h2>
             <Button variant="contained" color="secondary" sx={{ mr: 2 }} onClick={() => changeRaceId(+raceId - 1)}>
                 Previous Race
             </Button>
@@ -47,10 +46,8 @@ function RaceDetails() {
                 Next Race
             </Button>
 
-            <h1>RACE DETAILS</h1>
-            <p>Race ID: {raceId}</p>
-
-            <p>{race.name} {race.year} - Round {race.round}</p>
+            <h2>{race.year} - Round {race.round} - {race.name}</h2>
+            
             <ul>
             {results.map((result, index) => {
                 const driver = drivers.find(driver => driver.driverId === result.driverId);

@@ -1,30 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { IconButton, Box } from '@mui/material';
-import { Visibility } from '@mui/icons-material';
-import { fetchRaces } from '../api.ts';
+import React from 'react';
+import { Box } from '@mui/material';
 import BurgerMenu from './BurgerMenu';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import Races from './Races.jsx';
 
 function SeasonDetails() {
  
+  const { year } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-        const data = await fetchRaces();
-        setData(data);
-    }
-
-    fetchData();
-  }, []);
+  const changeSeasonYear = (year) => {
+      navigate(`/seasons/${year}`);
+  };
 
   return (
       <Box sx={{ width: '100%' }}>
-        <div>SEASONS 2023</div>
-        <Races />
+
+        <BurgerMenu />
+
+        <div>{year} SEASON</div>
+
+        <Button variant="contained" color="secondary" sx={{ mr: 2 }} onClick={() => changeSeasonYear(+year - 1)}>
+          Previous Season
+        </Button>
+        <Button variant="contained" color="secondary" onClick={() => changeSeasonYear(+year + 1)}>
+          Next Season
+        </Button>
+
+        <Races year={year} />
       </Box>
   );
 }

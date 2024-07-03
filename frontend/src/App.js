@@ -6,7 +6,6 @@ import DriverDetails from './components/DriverDetails';
 import Constructors from './components/Constructors';
 import Circuits from './components/Circuits';
 import SeasonDetails from './components/SeasonDetails';
-import Races from './components/Races';
 import RaceDetails from './components/RaceDetails';
 
 function App() {
@@ -19,7 +18,6 @@ function App() {
         <Route path="/constructors" element={<Constructors />} />
         <Route path="/circuits" element={<Circuits />} />
         <Route path="/seasons/:year" element={<SeasonDetails />} />
-        <Route path="/races/" element={<Races />} />
         <Route path="/races/:raceId" element={<RaceDetails />} />
       </Routes>
     </Router>

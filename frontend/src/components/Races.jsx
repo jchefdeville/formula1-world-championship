@@ -3,22 +3,22 @@ import { DataGrid } from '@mui/x-data-grid';
 import { IconButton, Box } from '@mui/material';
 import { Visibility } from '@mui/icons-material';
 import { fetchRaces } from '../api.ts';
-import BurgerMenu from './BurgerMenu';
 import { useNavigate } from 'react-router-dom';
 
-function Races() {
+function Races({ year }) {
  
   const navigate = useNavigate();
   const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-        const data = await fetchRaces();
+        console.log("fetching data for year", year);
+        const data = await fetchRaces(year);
         setData(data);
     }
 
     fetchData();
-  }, []);
+  }, [year]);
 
   const columns = [
     {
@@ -44,7 +44,6 @@ function Races() {
 
   return (
       <Box sx={{ width: '100%' }}>
-        <BurgerMenu />
         <DataGrid
           rows={data || []}
           columns={columns}

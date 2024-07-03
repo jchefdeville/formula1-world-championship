@@ -40,9 +40,9 @@ export const fetchCircuits = async () => {
     }
 };
 
-export const fetchRaces = async () => {
+export const fetchRaces = async (year: number) => {
     try {
-        const response = await axios.get('http://localhost:8080/seasons/2023/races');
+        const response = await axios.get(`http://localhost:8080/seasons/${year}/races`);
         return response.data;
     } catch (error) {
         console.error('Error while retrieving races API:', error);
