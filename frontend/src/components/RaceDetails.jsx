@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import BurgerMenu from './BurgerMenu';
 import { fetchRaceDetails } from '../api.ts';
+import { DataGrid } from '@mui/x-data-grid';
 
 function RaceDetails() {
 
@@ -14,6 +15,7 @@ function RaceDetails() {
     const [results, setResults] = useState(null);
     const [drivers, setDrivers] = useState(null);
     const [constructors, setConstructors] = useState(null);
+    const [constructorResults, setConstructorResults] = useState(null);
     const [statuses, setStatuses] = useState(null);
 
     const changeRaceId = (newRaceId) => {
@@ -27,13 +29,14 @@ function RaceDetails() {
             setResults(data.results);
             setDrivers(data.drivers);
             setConstructors(data.constructors);
+            setConstructorResults(data.constructorResults);
             setStatuses(data.statuses);
         }
 
         fetchData();
     }, [raceId]);
 
-    if (!race || !results || !drivers || !statuses || !constructors) {
+    if (!race || !results || !drivers || !statuses || !constructors || !constructorResults) {
         return <div>Loading</div>
     }
  
@@ -49,29 +52,41 @@ function RaceDetails() {
             </Button>
 
             <h2>{race.year} - Round {race.round} - {race.name}</h2>
-            
+
             <ul>
-            {results.map((result, index) => {
-                const driver = drivers.find(driver => driver.driverId === result.driverId);
-                const status = statuses.find(status => status.statusId === result.statusId);
-                const constructor = constructors.find(constructor => constructor.constructorId === result.constructorId);
-                return (
-                    <li key={index}>
-                        {result.positionText} 
-                        - <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
-                        - {constructor.name}
-                        - {result.points} points
-                        {result.statusId !== 1 ? (
-                            <span> - {status.status}</span>
-                        ) : (
-                            <span> - time = {result.time}</span>
-                        )}
-                    </li>
-                );
-            })}
-        </ul>
-    </div>
-  );
+                {results.map((result, index) => {
+                    const driver = drivers.find(driver => driver.driverId === result.driverId);
+                    const status = statuses.find(status => status.statusId === result.statusId);
+                    const constructor = constructors.find(constructor => constructor.constructorId === result.constructorId);
+                    return (
+                        <li key={index}>
+                            {result.positionText}
+                            - <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
+                            - {constructor.name}
+                            - {result.points} points
+                            {result.statusId !== 1 ? (
+                                <span> - {status.status}</span>
+                            ) : (
+                                <span> - time = {result.time}</span>
+                            )}
+                        </li>
+                    );
+                })}
+            </ul>
+
+            <h3>Constructor Results</h3>
+            <ul>
+                {constructorResults.map((constructorResult, index) => {
+                    const constructor = constructors.find(constructor => constructor.constructorId === constructorResult.constructorId);
+                    return ( 
+                        <li key={index}>
+                            {constructor.name} - {constructorResult.points} points
+                        </li>
+                    );
+                })}
+            </ul>
+        </div>
+    );
 }
 
 export default RaceDetails;

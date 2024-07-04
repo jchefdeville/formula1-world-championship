@@ -72,7 +72,7 @@ public class FormulaOneController {
 				.filter(r -> r.raceId() == raceId).findFirst().get();
 
 		var raceResults = results.stream()
-				.filter(r -> r.raceId() == raceId)
+				.filter(result -> result.raceId() == raceId)
 				.toList();
 
 		var driverIds = raceResults.stream()
@@ -83,8 +83,12 @@ public class FormulaOneController {
 				.filter(driver -> driverIds.contains(driver.driverId()))
 				.collect(Collectors.toList());
 
-		var constuctorIds = raceResults.stream()
-				.map(Result::constructorId)
+		var constructorResults = constructorsResults.stream()
+				.filter(r -> r.raceId() == raceId)
+				.toList();
+
+		var constuctorIds = constructorResults.stream()
+				.map(ConstructorResult::constructorId)
 				.toList();
 
 		var raceConstructors = constructors.stream()
@@ -94,11 +98,12 @@ public class FormulaOneController {
 		logger.info("Race={}", race.raceId());
 		logger.info("raceResults={}", raceResults.size());
 		logger.info("raceDrivers={}", raceDrivers.size());
+		logger.info("constructorResults={}", constructorResults.size());
 		logger.info("raceConstructors={}", raceConstructors.size());
 
 		// statuses to /GET and store in load npm
 
-		return new RaceDetails(race, raceResults, raceDrivers, raceConstructors, statuses);
+		return new RaceDetails(race, raceResults, raceDrivers, constructorResults, raceConstructors, statuses);
 	}
 
 	@GetMapping("/seasons/{year}/races")
