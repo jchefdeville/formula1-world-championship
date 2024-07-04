@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,8 +56,9 @@ public class FormulaOneController {
 	@GetMapping("/drivers/{driverId}")
 	public DriverDetails getDriverDetails(@PathVariable int driverId) {
 		var driver = drivers.stream()
-				.filter(d -> d.driverId() == driverId).findFirst().get();
-
+				.filter(d -> d.driverId() == driverId)
+				.findFirst()
+				.orElse(null);
 
 		return new DriverDetails(driver);
 	}
@@ -67,9 +69,15 @@ public class FormulaOneController {
 	}
 
 	@GetMapping("/races/{raceId}")
-	public RaceDetails getRaceDetails(@PathVariable int raceId) {
+	public ResponseEntity<RaceDetails> getRaceDetails(@PathVariable int raceId) {
 		var race = races.stream()
-				.filter(r -> r.raceId() == raceId).findFirst().get();
+				.filter(r -> r.raceId() == raceId)
+				.findFirst()
+				.orElse(null);
+
+		if (race == null) {
+			return ResponseEntity.notFound().build();
+		}
 
 		var raceResults = results.stream()
 				.filter(result -> result.raceId() == raceId)
@@ -103,7 +111,7 @@ public class FormulaOneController {
 
 		// statuses to /GET and store in load npm
 
-		return new RaceDetails(race, raceResults, raceDrivers, constructorResults, raceConstructors, statuses);
+		return ResponseEntity.ok(new RaceDetails(race, raceResults, raceDrivers, constructorResults, raceConstructors, statuses));
 	}
 
 	@GetMapping("/seasons/{year}/races")

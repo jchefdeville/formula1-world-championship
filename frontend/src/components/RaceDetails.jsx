@@ -63,7 +63,7 @@ function RaceDetails() {
                             {result.positionText}
                             - <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
                             - {constructor.name}
-                            - {result.points} points
+                            - {result.points} {result.points > 1 ? 'points' : 'point'}
                             {result.statusId !== 1 ? (
                                 <span> - {status.status}</span>
                             ) : (
@@ -80,7 +80,8 @@ function RaceDetails() {
                     const constructor = constructors.find(constructor => constructor.constructorId === constructorResult.constructorId);
                     return ( 
                         <li key={index}>
-                            {constructor.name} - {constructorResult.points} points
+                            {constructor.name} 
+                            - {constructorResult.points} {constructorResult.points > 1 ? 'points' : 'point'}
                         </li>
                     );
                 })}
