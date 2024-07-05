@@ -16,6 +16,7 @@ function RaceDetails() {
     const [constructors, setConstructors] = useState(null);
     const [constructorResults, setConstructorResults] = useState(null);
     const [driverScores, setDriverScores] = useState(null);
+    const [constructorScores, setConstructorScores] = useState(null);
     const [statuses, setStatuses] = useState(null);
 
     const changeRaceId = (newRaceId) => {
@@ -31,13 +32,14 @@ function RaceDetails() {
             setConstructors(data.constructors);
             setConstructorResults(data.constructorResults);
             setDriverScores(data.driverScores);
+            setConstructorScores(data.constructorScores);
             setStatuses(data.statuses);
         }
 
         fetchData();
     }, [raceId]);
 
-    if (!race || !results || !drivers || !statuses || !constructors || !constructorResults || !driverScores) {
+    if (!race || !results || !drivers || !statuses || !constructors || !constructorResults || !driverScores || !constructorScores) {
         return <div>Loading</div>
     }
  
@@ -62,6 +64,8 @@ function RaceDetails() {
                 </div>
                 <div style={{ flex: 1 }}>
                     <DriverScoresList driverScores={driverScores} drivers={drivers} />
+
+                    <ConstructorScoresList constructorScores={constructorScores} constructors={constructors} />
                 </div>
             </div>
 
@@ -126,8 +130,32 @@ function DriverScoresList({ driverScores, drivers }) {
                     const driver = drivers.find(driver => driver.driverId === driverScore.driverId);
                     return (
                         <li key={index}>
-                            {driverScore.position} - <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
-                            - {driverScore.points} {driverScore.points > 1 ? 'points' : 'point'} 
+                            {driverScore.position} - {driverScore.driverId} <a href={`/drivers/${driver?.driverId}`}>{driver?.forename} {driver?.surname}</a>
+                            - {driverScore.points} {driverScore.points > 1 ? 'points' : 'point'}
+                            - {driverScore.wins} {driverScore.wins > 1 ? 'wins' : 'win'}
+                        </li>
+                    );
+                })}
+            </ul>
+        </div>
+    );
+}
+
+function ConstructorScoresList({ constructorScores, constructors }) {
+    console.log(constructors);
+    console.log(constructorScores);
+
+    return (
+        <div>
+            <h3>Constructor Scores</h3>
+            <ul>
+                {constructorScores.map((constructorScore, index) => {
+                    const constructor = constructors.find(constructor => constructor.constructorId === constructorScore.constructorId);
+                    return (
+                        <li key={index}>
+                            {constructorScore.position} - {constructor?.name}
+                            - {constructorScore.points} {constructorScore.points > 1 ? 'points' : 'point'}
+                            - {constructorScore.wins} {constructorScore.wins > 1 ? 'wins' : 'win'}
                         </li>
                     );
                 })}
