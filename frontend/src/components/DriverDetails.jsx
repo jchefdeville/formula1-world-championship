@@ -10,11 +10,13 @@ function DriverDetails() {
     const navigate = useNavigate();
 
     const [driver, setDriver] = useState(null);
+    const [constructors, setConstructors] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             const data = await fetchDriverDetails(driverId);
             setDriver(data.driver);
+            setConstructors(data.constructors);
         }
 
         fetchData();
@@ -41,7 +43,16 @@ function DriverDetails() {
 
             <h2>Driver Details</h2>
             <p><strong>Name:</strong> {driver.forename} {driver.surname}</p>
-            <p><strong>number:</strong> {driver.number}</p>
+            <p><strong>Number:</strong> {driver.number}</p>
+
+            <h2>Constructors</h2>
+            <ul>
+                {constructors.map((constructor) => (
+                    <li key={constructor.constructorId}>
+                        <a href={`/constructors/${constructor.constructorId}`}>{constructor.name}</a>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }

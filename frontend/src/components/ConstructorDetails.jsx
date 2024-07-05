@@ -51,7 +51,7 @@ function ConstructorDetails() {
             <ul>
                 {drivers.map((driver) => (
                     <li key={driver.driverId}>
-                        {driver.forename} {driver.surname}
+                        <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
                     </li>
                 ))}
             </ul>
