@@ -65,7 +65,25 @@ public class FormulaOneController {
 				.findFirst()
 				.orElse(null);
 
-		return new ConstructorDetails(constructor);
+		// Retrieve constructorResults + constructorScores => raceId => results => driverId => drivers
+
+		var constructorDetailsResults = results.stream()
+				.filter(r -> r.constructorId() == constructorId)
+				.toList();
+
+		logger.info("constructorDetailsResults={}", constructorDetailsResults.size());
+
+		var driverIds = constructorDetailsResults.stream()
+				.map(Result::driverId)
+				.toList();
+
+		List<Driver> constructorDetailsDrivers = drivers.stream()
+				.filter(driver -> driverIds.contains(driver.driverId()))
+				.collect(Collectors.toList());
+
+		logger.info("Drivers={}", constructorDetailsDrivers.size());
+
+		return new ConstructorDetails(constructor, constructorDetailsDrivers);
 	}
 
 	@GetMapping("/constructors")
@@ -81,6 +99,10 @@ public class FormulaOneController {
 				.filter(d -> d.driverId() == driverId)
 				.findFirst()
 				.orElse(null);
+
+
+
+		// Retrieve results + driverScores => constructorId => constructors
 
 		return new DriverDetails(driver);
 	}
