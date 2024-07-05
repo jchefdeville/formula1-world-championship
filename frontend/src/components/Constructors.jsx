@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
+import { IconButton, Box } from '@mui/material';
+import { Visibility } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/material/styles';
 import { fetchConstructors } from '../api.ts';
 import BurgerMenu from './BurgerMenu';
 import { theme } from '../styles/theme-grid';
+import { useNavigate } from 'react-router-dom';
 
 function Constructors() {
 
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -19,7 +22,18 @@ function Constructors() {
     fetchData();
   }, []);
 
+  const handleDetailClick = (constructorId) => {
+    navigate(`/constructors/${constructorId}`);
+  };
+
   const columns = [
+    { 
+      field: 'constructorId', headerName: '', flex: 0.1, renderCell: (params) => (
+      <IconButton onClick={() => handleDetailClick(params.row.constructorId)}>
+        <Visibility />
+      </IconButton>
+      ), 
+    },
     { field: 'constructorRef', headerName: 'Ref', flex: 1 },
     { field: 'name', headerName: 'Name', flex: 1 },
     { field: 'nationality', headerName: 'Nationality', flex: 1 },

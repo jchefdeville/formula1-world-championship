@@ -6,7 +6,6 @@ export const fetchDrivers = async () => {
         return response.data;
     } catch (error) {
         console.error('Error while retrieving drivers API:', error);
-        throw error;
     }
 };
 
@@ -16,7 +15,6 @@ export const fetchDriverDetails = async (driverId: number) => {
         return response.data;
     } catch (error) {
         console.error(`Error while retrieving driver ${driverId} API:`, error);
-        throw error;
     }
 };
 
@@ -26,7 +24,15 @@ export const fetchConstructors = async () => {
         return response.data;
     } catch (error) {
         console.error('Error while retrieving constructors API:', error);
-        throw error;
+    }
+};
+
+export const fetchConstructorDetails = async (constructorId: number) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/constructors/${constructorId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error while retrieving constructors API:', error);
     }
 };
 
@@ -36,7 +42,6 @@ export const fetchCircuits = async () => {
         return response.data;
     } catch (error) {
         console.error('Error while retrieving circuits API:', error);
-        throw error;
     }
 };
 
@@ -45,8 +50,7 @@ export const fetchRaces = async (year: number) => {
         const response = await axios.get(`http://localhost:8080/seasons/${year}/races`);
         return response.data;
     } catch (error) {
-        console.error('Error while retrieving races API:', error);
-        throw error;
+        console.error(`Error while retrieving races ${year} API:`, error);
     }
 };
 
@@ -56,7 +60,6 @@ export const fetchRaceDetails = async (raceId: number) => {
         const response = await axios.get(`http://localhost:8080/races/${raceId}`);
         return response.data;
     } catch (error) {
-        console.error('Error while retrieving race details {raceId} API:', error);
-        throw error;
+        console.error(`Error while retrieving race details ${raceId} API:`, error);
     }
 };

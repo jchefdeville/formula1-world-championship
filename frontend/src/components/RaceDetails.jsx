@@ -26,6 +26,10 @@ function RaceDetails() {
     useEffect(() => {
         const fetchData = async () => {
             const data = await fetchRaceDetails(raceId);
+            if (data == undefined) {
+                navigate('/seasons/2023');
+                return;
+            }
             setRace(data.race);
             setResults(data.results);
             setDrivers(data.drivers);
@@ -130,7 +134,7 @@ function DriverScoresList({ driverScores, drivers }) {
                     const driver = drivers.find(driver => driver.driverId === driverScore.driverId);
                     return (
                         <li key={index}>
-                            {driverScore.position} - {driverScore.driverId} <a href={`/drivers/${driver?.driverId}`}>{driver?.forename} {driver?.surname}</a>
+                            {driverScore.position} - <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
                             - {driverScore.points} {driverScore.points > 1 ? 'points' : 'point'}
                             - {driverScore.wins} {driverScore.wins > 1 ? 'wins' : 'win'}
                         </li>
@@ -142,8 +146,6 @@ function DriverScoresList({ driverScores, drivers }) {
 }
 
 function ConstructorScoresList({ constructorScores, constructors }) {
-    console.log(constructors);
-    console.log(constructorScores);
 
     return (
         <div>

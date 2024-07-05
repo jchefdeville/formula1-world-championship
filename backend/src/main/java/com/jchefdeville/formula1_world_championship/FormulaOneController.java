@@ -22,6 +22,7 @@ import com.jchefdeville.formula1_world_championship.loader.ResultLoader;
 import com.jchefdeville.formula1_world_championship.loader.StatusLoader;
 import com.jchefdeville.formula1_world_championship.model.Circuit;
 import com.jchefdeville.formula1_world_championship.model.Constructor;
+import com.jchefdeville.formula1_world_championship.model.ConstructorDetails;
 import com.jchefdeville.formula1_world_championship.model.ConstructorResult;
 import com.jchefdeville.formula1_world_championship.model.ConstructorScore;
 import com.jchefdeville.formula1_world_championship.model.Driver;
@@ -52,16 +53,30 @@ public class FormulaOneController {
 
 	@GetMapping("/circuits")
 	public List<Circuit> getCircuits() {
+		logger.info("circuits={}", circuits.size());
 		return circuits;
+	}
+
+	@GetMapping("/constructors/{constructorId}")
+	public ConstructorDetails getConstructorDetails(@PathVariable int constructorId) {
+		logger.info("constructorId={}", constructorId);
+		var constructor = constructors.stream()
+				.filter(c -> c.constructorId() == constructorId)
+				.findFirst()
+				.orElse(null);
+
+		return new ConstructorDetails(constructor);
 	}
 
 	@GetMapping("/constructors")
 	public List<Constructor> getConstructors() {
+		logger.info("constructors={}", constructors.size());
 		return constructors;
 	}
 
 	@GetMapping("/drivers/{driverId}")
 	public DriverDetails getDriverDetails(@PathVariable int driverId) {
+		logger.info("driverId={}", driverId);
 		var driver = drivers.stream()
 				.filter(d -> d.driverId() == driverId)
 				.findFirst()
@@ -72,11 +87,13 @@ public class FormulaOneController {
 
 	@GetMapping("/drivers")
 	public List<Driver> getDrivers() {
+		logger.info("drivers={}", drivers.size());
 		return drivers;
 	}
 
 	@GetMapping("/races/{raceId}")
 	public ResponseEntity<RaceDetails> getRaceDetails(@PathVariable int raceId) {
+		logger.info("raceId={}", raceId);
 		var race = races.stream()
 				.filter(r -> r.raceId() == raceId)
 				.findFirst()
@@ -90,8 +107,18 @@ public class FormulaOneController {
 				.filter(result -> result.raceId() == raceId)
 				.toList();
 
-		var driverIds = raceResults.stream()
-				.map(Result::driverId)
+		var raceDriverScores = driverScores.stream()
+				.filter(r -> r.raceId() == raceId)
+				.sorted(Comparator.comparingInt(DriverScore::position))
+				.toList();
+
+		var raceConstructorScores = constructorScores.stream()
+				.filter(r -> r.raceId() == raceId)
+				.sorted(Comparator.comparingInt(ConstructorScore::position))
+				.toList();
+
+		var driverIds = raceDriverScores.stream()
+				.map(DriverScore::driverId)
 				.toList();
 
 		List<Driver> raceDrivers = drivers.stream()
@@ -110,23 +137,13 @@ public class FormulaOneController {
 				.filter(constructor -> constuctorIds.contains(constructor.constructorId()))
 				.toList();
 
-		var raceDriverScores = driverScores.stream()
-				.filter(r -> r.raceId() == raceId)
-				.sorted(Comparator.comparingInt(DriverScore::position))
-				.toList();
-
-		var raceConstructorScores = constructorScores.stream()
-				.filter(r -> r.raceId() == raceId)
-				.sorted(Comparator.comparingInt(ConstructorScore::position))
-				.toList();
-
 		logger.info("Race={}", race.raceId());
 		logger.info("raceResults={}", raceResults.size());
+		logger.info("raceDriverScores={}", raceDriverScores.size());
+		logger.info("raceConstructorScores={}", raceConstructorScores.size());
 		logger.info("raceDrivers={}", raceDrivers.size());
 		logger.info("constructorResults={}", constructorResults.size());
 		logger.info("raceConstructors={}", raceConstructors.size());
-		logger.info("raceDriverScores={}", raceDriverScores.size());
-		logger.info("raceConstructorScores={}", raceConstructorScores.size());
 
 		// statuses to /GET and store in load npm
 
@@ -135,14 +152,16 @@ public class FormulaOneController {
 
 	@GetMapping("/seasons/{year}/races")
 	public List<Race> getRaces(@PathVariable int year) {
+		logger.info("year={}", year);
 		return races.stream()
 				.filter(r -> r.year() == year)
+				.sorted(Comparator.comparingInt(Race::round))
 				.toList();
 	}
 
 	@GetMapping("/seasons/{year}")
 	public SeasonDetails getSeasonDetails(@PathVariable int year) {
-
+		logger.info("year={}", year);
 		var seasonRaces = races.stream()
 				.filter(r -> r.year() == year)
 				.toList();
