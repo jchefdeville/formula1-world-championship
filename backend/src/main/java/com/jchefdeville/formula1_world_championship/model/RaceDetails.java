@@ -8,5 +8,6 @@ public record RaceDetails(
 		List<Driver> drivers,
 		List<ConstructorResult> constructorResults,
 		List<Constructor> constructors,
+		List<DriverScore> driverScores,
 		List<Status> statuses)
 {}

@@ -1,5 +1,6 @@
 package com.jchefdeville.formula1_world_championship;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import com.jchefdeville.formula1_world_championship.loader.CircuitLoader;
 import com.jchefdeville.formula1_world_championship.loader.ConstructorLoader;
 import com.jchefdeville.formula1_world_championship.loader.ConstructorResultLoader;
 import com.jchefdeville.formula1_world_championship.loader.DriverLoader;
+import com.jchefdeville.formula1_world_championship.loader.DriverScoreLoader;
 import com.jchefdeville.formula1_world_championship.loader.RaceLoader;
 import com.jchefdeville.formula1_world_championship.loader.ResultLoader;
 import com.jchefdeville.formula1_world_championship.loader.StatusLoader;
@@ -22,6 +24,7 @@ import com.jchefdeville.formula1_world_championship.model.Constructor;
 import com.jchefdeville.formula1_world_championship.model.ConstructorResult;
 import com.jchefdeville.formula1_world_championship.model.Driver;
 import com.jchefdeville.formula1_world_championship.model.DriverDetails;
+import com.jchefdeville.formula1_world_championship.model.DriverScore;
 import com.jchefdeville.formula1_world_championship.model.Race;
 import com.jchefdeville.formula1_world_championship.model.RaceDetails;
 import com.jchefdeville.formula1_world_championship.model.Result;
@@ -41,6 +44,7 @@ public class FormulaOneController {
 	private List<Race> races;
 	private List<Result> results;
 	private List<ConstructorResult> constructorsResults;
+	private List<DriverScore> driverScores;
 	private List<Status> statuses;
 
 	@GetMapping("/circuits")
@@ -103,15 +107,21 @@ public class FormulaOneController {
 				.filter(constructor -> constuctorIds.contains(constructor.constructorId()))
 				.toList();
 
+		var raceDriverScores = driverScores.stream()
+				.filter(r -> r.raceId() == raceId)
+				.sorted(Comparator.comparingInt(DriverScore::position))
+				.toList();
+
 		logger.info("Race={}", race.raceId());
 		logger.info("raceResults={}", raceResults.size());
 		logger.info("raceDrivers={}", raceDrivers.size());
 		logger.info("constructorResults={}", constructorResults.size());
 		logger.info("raceConstructors={}", raceConstructors.size());
+		logger.info("raceDriverScores={}", raceDriverScores.size());
 
 		// statuses to /GET and store in load npm
 
-		return ResponseEntity.ok(new RaceDetails(race, raceResults, raceDrivers, constructorResults, raceConstructors, statuses));
+		return ResponseEntity.ok(new RaceDetails(race, raceResults, raceDrivers, constructorResults, raceConstructors, raceDriverScores, statuses));
 	}
 
 	@GetMapping("/seasons/{year}/races")
@@ -134,11 +144,12 @@ public class FormulaOneController {
 	@PostConstruct
 	public void init() {
 		circuits = CircuitLoader.fromCsv("src/main/resources/circuits.csv");
-		constructors = ConstructorLoader.fromCsv("src/main/resources/constructors.csv");
 		drivers = DriverLoader.fromCsv("src/main/resources/drivers.csv");
-		races = RaceLoader.fromCsv("src/main/resources/races.csv");
 		results = ResultLoader.fromCsv("src/main/resources/results.csv");
+		driverScores = DriverScoreLoader.fromCsv("src/main/resources/driver_standings.csv");
+		constructors = ConstructorLoader.fromCsv("src/main/resources/constructors.csv");
 		constructorsResults = ConstructorResultLoader.fromCsv("src/main/resources/constructor_results.csv");
+		races = RaceLoader.fromCsv("src/main/resources/races.csv");
 		statuses = StatusLoader.fromCsv("src/main/resources/status.csv");
 	}
 }

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import BurgerMenu from './BurgerMenu';
 import { fetchRaceDetails } from '../api.ts';
-import { DataGrid } from '@mui/x-data-grid';
 
 function RaceDetails() {
 
@@ -16,6 +15,7 @@ function RaceDetails() {
     const [drivers, setDrivers] = useState(null);
     const [constructors, setConstructors] = useState(null);
     const [constructorResults, setConstructorResults] = useState(null);
+    const [driverScores, setDriverScores] = useState(null);
     const [statuses, setStatuses] = useState(null);
 
     const changeRaceId = (newRaceId) => {
@@ -30,13 +30,14 @@ function RaceDetails() {
             setDrivers(data.drivers);
             setConstructors(data.constructors);
             setConstructorResults(data.constructorResults);
+            setDriverScores(data.driverScores);
             setStatuses(data.statuses);
         }
 
         fetchData();
     }, [raceId]);
 
-    if (!race || !results || !drivers || !statuses || !constructors || !constructorResults) {
+    if (!race || !results || !drivers || !statuses || !constructors || !constructorResults || !driverScores) {
         return <div>Loading</div>
     }
  
@@ -53,6 +54,26 @@ function RaceDetails() {
 
             <h2>{race.year} - Round {race.round} - {race.name}</h2>
 
+            <div style={{ display: 'flex' }}>
+                <div style={{ flex: 1 }}>
+                    <ResultsList results={results} drivers={drivers} statuses={statuses} constructors={constructors} />
+
+                    <ConstructorResultsList constructorResults={constructorResults} constructors={constructors} />
+                </div>
+                <div style={{ flex: 1 }}>
+                    <DriverScoresList driverScores={driverScores} drivers={drivers} />
+                </div>
+            </div>
+
+
+        </div>
+    );
+}
+
+function ResultsList({ results, drivers, statuses, constructors }) {
+    return (
+        <div>
+            <h3>Driver Results</h3>
             <ul>
                 {results.map((result, index) => {
                     const driver = drivers.find(driver => driver.driverId === result.driverId);
@@ -73,15 +94,40 @@ function RaceDetails() {
                     );
                 })}
             </ul>
+        </div>
+    )
+}
 
+function ConstructorResultsList({ constructorResults, constructors }) {
+    return (
+        <div>
             <h3>Constructor Results</h3>
             <ul>
                 {constructorResults.map((constructorResult, index) => {
                     const constructor = constructors.find(constructor => constructor.constructorId === constructorResult.constructorId);
-                    return ( 
+                    return (
                         <li key={index}>
-                            {constructor.name} 
-                            - {constructorResult.points} {constructorResult.points > 1 ? 'points' : 'point'}
+                            {constructor.name} - {constructorResult.points} {constructorResult.points > 1 ? 'points' : 'point'}
+                            <span> - {constructorResult.status}</span>
+                        </li>
+                    );
+                })}
+            </ul>
+        </div>
+    );
+}
+
+function DriverScoresList({ driverScores, drivers }) {
+    return (
+        <div>
+            <h3>Driver Scores</h3>
+            <ul>
+                {driverScores.map((driverScore, index) => {
+                    const driver = drivers.find(driver => driver.driverId === driverScore.driverId);
+                    return (
+                        <li key={index}>
+                            {driverScore.position} - <a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a>
+                            - {driverScore.points} {driverScore.points > 1 ? 'points' : 'point'} 
                         </li>
                     );
                 })}
