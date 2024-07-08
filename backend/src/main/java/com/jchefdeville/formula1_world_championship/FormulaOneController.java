@@ -113,6 +113,8 @@ public class FormulaOneController {
 				.toList();
 
 
+
+
 		// Retrieve results + driverScores => constructorId => constructors
 
 		return new DriverDetails(driver, driverConstructors);
@@ -201,7 +203,20 @@ public class FormulaOneController {
 
 		// Get last driverScores et last constructorScores ?
 
-		return new SeasonDetails(year, seasonRaces);
+		var seasonResults = results.stream()
+				.filter(r -> seasonRaces.stream().anyMatch(sr -> sr.raceId() == r.raceId()))
+				// .filter(r -> r.raceId() == 1099)
+				.toList();
+
+		var seasonDrivers = drivers.stream()
+				.filter(r -> seasonResults.stream().anyMatch(sr -> sr.driverId() == r.driverId()))
+				.toList();
+
+		var seasonCircuits = circuits.stream()
+				.filter(c -> seasonRaces.stream().anyMatch(sr -> sr.circuitId() == c.circuitId()))
+				.toList();
+
+		return new SeasonDetails(year, seasonRaces, seasonResults, seasonDrivers, seasonCircuits);
 	}
 
 	@PostConstruct

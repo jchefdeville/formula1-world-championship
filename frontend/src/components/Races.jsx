@@ -47,11 +47,8 @@ function Races({ year }) {
         <DataGrid
           rows={data || []}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
           getRowId={(row) => row.raceId}
           disableSelectionOnClick
-          autoHeight
         />
       </Box>
   );

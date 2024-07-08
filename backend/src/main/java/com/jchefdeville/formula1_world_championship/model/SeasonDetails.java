@@ -4,6 +4,9 @@ import java.util.List;
 
 public record SeasonDetails(
 		int year,
-		List<Race> races) {
+		List<Race> races,
+		List<Result> results,
+		List<Driver> drivers,
+		List<Circuit> circuits) {
 
 }
