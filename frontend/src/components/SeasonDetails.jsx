@@ -61,7 +61,6 @@ function SeasonDetails() {
   );
 }
 
-// Composant TableHeader
 const TableHeader = ({ races, circuits }) => (
   <thead>
     <tr>
@@ -74,14 +73,17 @@ const TableHeader = ({ races, circuits }) => (
   </thead>
 );
 
-// Composant TableRow
 const TableRow = ({ driver, races, results }) => (
   <tr>
     <td>{driver.forename} {driver.surname}</td>
     {races.map((race) => {
       const driverResult = results.find((res) => res.driverId === driver.driverId && res.raceId === race.raceId);
       return (
-        <td key={race.raceId} style={{ textAlign: 'center' }}>
+        <td key={race.raceId} style={{ textAlign: 'center', 
+          backgroundColor: driverResult && driverResult.position === 1 ? '#ffffbf' 
+            : driverResult && driverResult.position === 2 ? '#dfdfdf' 
+            : driverResult && driverResult.position === 3 ? '#ffdf9f' 
+            : 'inherit' }}>
           {driverResult ? driverResult.points : '-'}
         </td>
       );
@@ -89,7 +91,6 @@ const TableRow = ({ driver, races, results }) => (
   </tr>
 );
 
-// Utilisation dans SeasonDetails
 const SeasonDetailsTable = ({ drivers, races, results, circuits }) => (
   <table>
     <TableHeader races={races} circuits={circuits} />
