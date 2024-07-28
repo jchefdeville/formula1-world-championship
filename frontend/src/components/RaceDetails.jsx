@@ -115,7 +115,9 @@ function ConstructorResultsList({ constructorResults, constructors }) {
                     const constructor = constructors.find(constructor => constructor.constructorId === constructorResult.constructorId);
                     return (
                         <li key={index}>
-                            {constructor.name} - {constructorResult.points} {constructorResult.points > 1 ? 'points' : 'point'}
+                            <a href={`/constructors/${constructor.constructorId}`}>
+                                {constructor.name}
+                            </a> - {constructorResult.points} {constructorResult.points > 1 ? 'points' : 'point'}
                             <span> - {constructorResult.status}</span>
                         </li>
                     );
@@ -155,7 +157,8 @@ function ConstructorScoresList({ constructorScores, constructors }) {
                     const constructor = constructors.find(constructor => constructor.constructorId === constructorScore.constructorId);
                     return (
                         <li key={index}>
-                            {constructorScore.position} - {constructor?.name}
+                            {constructorScore.position} 
+                            - <a href={`/constructors/${constructor.constructorId}`}>{constructor?.name}</a>
                             - {constructorScore.points} {constructorScore.points > 1 ? 'points' : 'point'}
                             - {constructorScore.wins} {constructorScore.wins > 1 ? 'wins' : 'win'}
                         </li>

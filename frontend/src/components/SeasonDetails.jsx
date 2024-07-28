@@ -75,7 +75,7 @@ const TableHeader = ({ races, circuits }) => (
 
 const TableRow = ({ driver, races, results }) => (
   <tr>
-    <td>{driver.forename} {driver.surname}</td>
+    <td><a href={`/drivers/${driver.driverId}`}>{driver.forename} {driver.surname}</a></td>
     {races.map((race) => {
       const driverResult = results.find((res) => res.driverId === driver.driverId && res.raceId === race.raceId);
       return (
